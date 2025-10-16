@@ -1,0 +1,5 @@
+map-westernmost-x: -2048
+map-northernmost-z: -1024
+map-width: 4096
+map-height: 2048
+time-update-interval-ticks: 20
