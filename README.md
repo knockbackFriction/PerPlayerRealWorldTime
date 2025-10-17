@@ -5,4 +5,4 @@ Spigot plugin for servers running an (equirectangular) Earth map, it allows time
 When solar time reaches noon, the sun will teleport from east to west.
 
 ## Showcase
-<video src="pluginShowcase.mp4" controls></video>
+![Click here](https://github.com/knockbackFriction/PerPlayerRealWorldTime/raw/refs/heads/main/pluginShowcase.mp4)
