@@ -5,6 +5,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.time.Instant;
 
@@ -29,23 +30,24 @@ public final class Main extends JavaPlugin implements Listener {
         timeCalculator = new TimeCalculator();
 
         updateInterval = this.getConfig().getInt("time-update-interval-ticks");
+
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                updateTime();
+            }
+        }.runTaskTimer(this, 0, updateInterval);
     }
 
-    int tickCounter = 0;
-
-    @EventHandler
-    public void onTick(ServerTickEndEvent e) {
-        if (tickCounter % updateInterval == 0) {
-            for (Player p : getServer().getOnlinePlayers()) {
-                float lon = coordCalculator.calcLongitude(p.getLocation().getBlockX());
-                double altitude = timeCalculator.calculateSunAltitude(
+    public void updateTime() {
+        for (Player p : getServer().getOnlinePlayers()) {
+            float lon = coordCalculator.calcLongitude(p.getLocation().getBlockX());
+            double altitude = timeCalculator.calculateSunAltitude(
                     coordCalculator.calcLatitude(p.getLocation().getBlockZ()),
                     lon );
 
-                boolean pastNoon = timeCalculator.pastNoon( lon );
-                p.setPlayerTime(timeCalculator.minecraftSunAltitude(altitude, pastNoon), false);
-            }
+            boolean pastNoon = timeCalculator.pastNoon( lon );
+            p.setPlayerTime(timeCalculator.minecraftSunAltitude(altitude, pastNoon), false);
         }
-        tickCounter++;
     }
 }
