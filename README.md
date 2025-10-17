@@ -1,6 +1,6 @@
 # PerPlayerRealWorldTime
 Spigot plugin for servers running an (equirectangular) Earth map, it allows time synchronization with the real world time, on a per player basis. The approach used is by calculating the sun altitude, meaning it’s also friendly for latitudes far from the equator. This does not alter mob spawning behavior.
-- TODO: We need to fix the fact that the sun is too high when it’s twilight in real life.
+Some adjustements need to be done on the Minecraft time conversion level.
 
 ## Limitation
 - When solar time reaches noon, the sun will teleport from east to west.
