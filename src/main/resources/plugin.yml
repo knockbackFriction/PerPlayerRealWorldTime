@@ -1,4 +1,3 @@
 name: PerPlayerRealWorldTime
 version: '${version}'
 main: eu.caec.perplayerrealworldtime.Main
-api-version: '1.21'
