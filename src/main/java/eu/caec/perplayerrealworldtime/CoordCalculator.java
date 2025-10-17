@@ -9,7 +9,7 @@ public class CoordCalculator {
     int mapWidth = config.getInt("map-width");
     int mapHeight = config.getInt("map-height");
 
-    public float getLongitude(int x) {
+    public float calcLongitude(int x) {
         x -= mapWesternmostX;
         float divider = mapWidth/360.0f;
         float lon = x/divider;
@@ -21,7 +21,7 @@ public class CoordCalculator {
         return lon;
     }
 
-    public float getLatitude(int z) {
+    public float calcLatitude(int z) {
         z -= mapNorthernmostZ;
         float divider = mapWidth/360.0f;
         float lat = z/divider;

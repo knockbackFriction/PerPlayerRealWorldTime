@@ -37,7 +37,13 @@ public final class Main extends JavaPlugin implements Listener {
     public void onTick(ServerTickEndEvent e) {
         if (tickCounter % updateInterval == 0) {
             for (Player p : getServer().getOnlinePlayers()) {
-                p.setPlayerTime(timeCalculator.naiveGpsToTime(coordCalculator.getLongitude( p.getLocation().getBlockX() ) ), false);
+                float lon = coordCalculator.calcLongitude(p.getLocation().getBlockX());
+                double altitude = timeCalculator.calculateSunAltitude(
+                    coordCalculator.calcLatitude(p.getLocation().getBlockZ()),
+                    lon );
+
+                boolean pastNoon = timeCalculator.pastNoon( lon );
+                p.setPlayerTime(timeCalculator.minecraftSunAltitude(altitude, pastNoon), false);
             }
         }
         tickCounter++;
