@@ -31,8 +31,7 @@ public class TimeCalculator {
         // Calculate declination of the sun (in degrees)
         double declination = 23.44 * Math.sin(Math.toRadians(360.0 / 365.0 * (dayOfYear - 81)));
 
-        // Adjust the mean solar time with the time correction factor
-        double solarTime = meanSolarTime + longitude / 60.0; // convert TCF from minutes to hours
+        double solarTime = meanSolarTime + longitude / 60.0;
 
         // Calculate hour angle
         double hourAngle = 15 * (solarTime - 12);
@@ -47,13 +46,25 @@ public class TimeCalculator {
     }
 
     int FULL_MINECRAFT_DAY = 24000;
+    int MINECRAFT_HORIZON_TO_ZENITH_RANGE = 6785;
+    int MINECRAFT_SUNRISE_NEG = -785; // 0 degrees
+    int MINECRAFT_SUNSET = 12785; // 0 degrees
+    int MINECRAFT_MOONPEAK_TO_HORIZON = 5215;
 
     public int minecraftSunAltitude(double alt, boolean noonPassed) {
         int newalt;
-        if (noonPassed) { // from noon to midnight
-            newalt = (int) ( (alt/-90)*6000 ) + 12000;
-        } else { // from midnight to noon
-            newalt = (int) ( (alt/90)*6000 );
+        if (noonPassed) { // Noon, sunset, midnight
+            if (alt > 0) {
+                newalt = (int) ( MINECRAFT_SUNSET + ((alt/-90)*MINECRAFT_HORIZON_TO_ZENITH_RANGE) );
+            } else {
+                newalt = (int) ( MINECRAFT_SUNSET + ((alt/-90)*MINECRAFT_MOONPEAK_TO_HORIZON) );
+            }
+        } else { // Midnight, sunrise, noon
+            if (alt > 0) {
+                newalt = (int) ( MINECRAFT_SUNRISE_NEG + ((alt/90)*MINECRAFT_HORIZON_TO_ZENITH_RANGE) );
+            } else {
+                newalt = (int) ( MINECRAFT_SUNRISE_NEG + ((alt/90)*MINECRAFT_MOONPEAK_TO_HORIZON) );
+            }
         }
         return (newalt + FULL_MINECRAFT_DAY);
     }
